@@ -61,14 +61,22 @@ public interface Processor {
 
 3. 启动 HDFSImporter 导入任务，并增加如下参数指定自己定义的类名
 
-   ```
-   # user custom processor class full name
+   ```shell
+   # 通过该参数测试预处理类名
    --custom_processor cn.kbyte.CustomProcessor
+   ```
+
+4. 可以通过 debug 模式测试预处理模块的结果是否符合预期，开启方式为添加 --debug 参数。在该模式下，导入工具会将结果以文本的方式输出到 HDFS 相应的目录下，并且**不会**真正的导入的神策系统当中
+
+   ```shell
+   # 通过该参数开启 debug 模式
+   --debug
    ```
 
 ## 4. 其他
 
 * 如果数据无效，可以直接返回 `null`，HDFSImporter 会跳过这条数据；
 * `process` 函数抛异常则 HDFSImporter 任务会执行失败；
-* 测试模块是否生效，可以在 `process` 函数当中打印关键的 debug 信息，并通过 mapper 的日志查看输出情况。
+
+  ​
 
