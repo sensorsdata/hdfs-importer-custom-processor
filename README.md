@@ -57,20 +57,29 @@ public interface Processor {
 
    hdfs_importer-standalone.jar 可在部署了神策服务的机器上找到，一般情况下目录地址为：`/home/sa_cluster/sa/tools/hdfs_importer/lib/` 。
 
-2. 将编译出来的 `custom_processor.jar` 放到 HDFSImporter 的 `lib` 目录下，即 `/home/sa_cluster/sa/tools/hdfs_importer/lib/` 目录下。
+2. 将编译出来的 `custom_processor.jar` 放到相应的目录下，如： `/home/sa_cluster/custom_lib/`。注意尽量不要放在 `/home/sa_cluster/sa/` 目录下，否则有可能在神策系统升级的时候被覆盖掉。
 
-3. 启动 HDFSImporter 导入任务，并增加如下参数指定自己定义的类名
+3. 指定环境变量和类名参数，然后启动 HDFSImporter 导入任务，进行数据导入
 
    ```shell
-   # 通过该参数测试预处理类名
-   --custom_processor cn.kbyte.CustomProcessor
+   # 通过该环境变量设置 jar 包的位置
+   export CUSTOM_LIB_JARS='/home/sa_cluster/custom_lib/custom_processor.jar'
+   sh /home/sa_cluster/sa/tools/hdfs_importer/bin/hdfs_importer.sh \
+   --path /data/your_input \
+   --project your_project \
+   --custom_processor cn.kbyte.CustomProcessor # 通过该参数指定预处理模块的类名
    ```
 
 4. 可以通过 `debug` 模式测试预处理模块的结果是否符合预期，开启方式为添加 `--debug` 参数。在该模式下，导入工具会将结果以文本的方式输出到 `HDFS` 相应的目录下，并且**不会**真正的导入的神策系统当中
 
    ```shell
-   # 通过该参数开启 debug 模式
-   --debug
+   # 通过该环境变量设置 jar 包的位置
+   export CUSTOM_LIB_JARS='/home/sa_cluster/custom_lib/custom_processor.jar'
+   sh /home/sa_cluster/sa/tools/hdfs_importer/bin/hdfs_importer.sh \
+   --path /data/your_input \
+   --project your_project \
+   --custom_processor cn.kbyte.CustomProcessor \ # 通过该参数指定预处理模块的类名
+   --debug # 通过该参数开启 debug 模式
    ```
 
 ## 4. 其他
